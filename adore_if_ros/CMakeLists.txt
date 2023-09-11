@@ -110,6 +110,13 @@ find_package(if_r2s CONFIG REQUIRED)
 find_package(sim CONFIG REQUIRED)
 find_package(apps CONFIG REQUIRED)
 
+find_package(sqp CONFIG REQUIRED)
+find_package(Eigen3 REQUIRED)
+find_package(osqp REQUIRED)
+find_package(Boost REQUIRED)
+find_package(Catch2 REQUIRED)
+
+
 find_package(plotlablib CONFIG REQUIRED)
 find_package(cppzmq CONFIG REQUIRED)
 find_package(ZeroMQ CONFIG REQUIRED)
@@ -1076,6 +1083,20 @@ target_link_libraries(plainxmlexporter
                           plotlablib::plotlablib
 )
 
+add_executable(dummy_node_sqp src/dummy_node_sqp.cpp)
+target_include_directories(dummy_node_sqp PRIVATE include ${catkin_INCLUDE_DIRS})
+target_link_libraries(dummy_node_sqp 
+                        PUBLIC
+                          ${catkin_LIBRARIES} 
+                          libadore::apps
+                          adore_if_ros_scheduling::adore_if_ros_scheduling
+                          sqp::sqp
+                          Eigen3::Eigen
+                          osqp::osqp
+                          ${Boost_LIBRARIES}
+
+)
+
 
 add_executable(adore_unstructured_planner_node src/adore_unstructured_planner_node.cpp)
 target_include_directories(
@@ -1191,6 +1212,7 @@ install(
     adore_mission_controller_node
     adore_crosstraffic_provider
     area_of_effect_provider
+    dummy_node_sqp
     ego_transform_provider
     plainxmlexporter
     test_control_dashboard
