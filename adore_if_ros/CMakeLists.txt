@@ -833,6 +833,21 @@ target_link_libraries(plot_views_node
                           adore_if_ros_scheduling::adore_if_ros_scheduling
 )
 
+add_executable(plot_occupancy_grid_node)
+target_sources(plot_occupancy_grid_node PRIVATE src/plot_occupancy_grid_node.cpp)
+target_include_directories(plot_occupancy_grid_node PRIVATE include ${catkin_INCLUDE_DIRS})
+target_link_libraries(plot_occupancy_grid_node
+                        PRIVATE 
+                          ${catkin_LIBRARIES} 
+                          libadore::apps 
+                          libadore::sim 
+                          libadore::mad
+                          libadore::fun
+                          libadore::env 
+                          plotlablib::plotlablib
+                          adore_if_ros_scheduling::adore_if_ros_scheduling
+)
+
 
 add_executable(adore_pvprovider_node)
 target_sources(adore_pvprovider_node PRIVATE src/adore_pvprovider_node.cpp)
@@ -1062,6 +1077,27 @@ target_link_libraries(plainxmlexporter
 )
 
 
+add_executable(adore_unstructured_planner_node src/adore_unstructured_planner_node.cpp)
+target_include_directories(
+    adore_unstructured_planner_node
+    PRIVATE
+    include 
+    ${catkin_INCLUDE_DIRS}
+)
+target_link_libraries(adore_unstructured_planner_node 
+                        PRIVATE 
+                          ${catkin_LIBRARIES} 
+                          libadore::apps 
+                          libadore::fun 
+                          libadore::env 
+                          libadore::sim 
+                          libadore::if_r2s 
+                          dlib::dlib
+                          adore_if_ros_scheduling::adore_if_ros_scheduling
+                          plotlablib::plotlablib
+)
+
+
 ## Specify libraries to link a library or executable target against
 # link against target adore_if_xodr instead of library
 # target_link_libraries(test_trajectory_planner_node
@@ -1143,6 +1179,7 @@ install(
     adore_trajectory_planner_lc_node
     adore_trajectory_planner_alc_node
     adore_tactical_planner_node
+    adore_unstructured_planner_node
     test_lc_trajectory_planner_node
     test_straight_line_prediction_node
     adore_gap_provider
@@ -1164,6 +1201,7 @@ install(
     plot_ego_node
     plot_gaps_node
     plot_lanes_node
+    plot_occupancy_grid_node
     plot_planning_details_node
     plot_predictions_node
     plot_predictions_minimal_node
