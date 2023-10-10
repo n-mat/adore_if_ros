@@ -33,7 +33,7 @@ namespace adore
         {
             private:
             std::list<T> data_;
-            std::list<T>::size_type buffer_size_;
+            typename std::list<T>::size_type buffer_size_;
             ros::Subscriber subscriber_;
             CONVERTER converter_;
             public:
@@ -48,7 +48,7 @@ namespace adore
             }
             Feed(ros::NodeHandle* n,const std::string& topic,int qsize,int buffer_size=-1)
             {
-                buffer_size_ = buffer_size > 0 ? static_cast<std::list<T>::size_type>(buffer_size) : static_cast<std::list<T>::size_type>(qsize);
+                buffer_size_ = buffer_size > 0 ? static_cast<typename std::list<T>::size_type>(buffer_size) : static_cast<typename std::list<T>::size_type>(qsize);
                 bool no_delay;
                 n->param("/tcp_no_delay", no_delay, false);
                 subscriber_ = n->subscribe(topic,qsize,&Feed<T,TMSG,CONVERTER>::receive,this,ros::TransportHints().tcpNoDelay(no_delay));
@@ -74,7 +74,7 @@ namespace adore
         {
             private:
             std::list<T> data_;
-            std::list<T>::size_type buffer_size_;
+            typename std::list<T>::size_type buffer_size_;
             ros::Subscriber subscriber_;
             CONVERTER converter_;
             std::function<void()> fcn_;
@@ -92,7 +92,7 @@ namespace adore
             }
             FeedWithCallback(ros::NodeHandle* n,const std::string& topic,int qsize,int buffer_size=-1)
             {
-                buffer_size_ = buffer_size > 0 ? static_cast<std::list<T>::size_type>(buffer_size) : static_cast<std::list<T>::size_type>(qsize);
+                buffer_size_ = buffer_size > 0 ? static_cast<typename std::list<T>::size_type>(buffer_size) : static_cast<typename std::list<T>::size_type>(qsize);
                 bool no_delay;
                 n->param("/tcp_no_delay", no_delay, false);
                 subscriber_ = n->subscribe(topic,qsize,&FeedWithCallback<T,TMSG,CONVERTER>::receive,this,ros::TransportHints().tcpNoDelay(no_delay));
