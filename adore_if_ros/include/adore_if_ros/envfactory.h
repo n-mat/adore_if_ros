@@ -301,6 +301,22 @@ namespace adore
                         LaneGeometryConverter>(n_,"ENV/lanegeometry",100);
       }
 
+      // get combined lane geometry feed
+			adore::env::AFactory::TLaneGeometryArrayFeed* getLaneGeometryArrayFeed() override
+      {
+        return new Feed<std::vector<std::shared_ptr<adore::env::BorderBased::LaneGeometryDataProxy>>,
+                          adore_if_ros_msg::LaneGeometryArrayConstPtr,
+                          LaneGeometryConverter>(n_,"ENV/lanegeometryarray",100);
+      }
+
+      // write the combined lane geometry
+			adore::env::AFactory::TLaneGeometryArrayWriter* getLaneGeometryArrayWriter() override
+      {
+        return new Writer<std::vector<std::shared_ptr<adore::env::BorderBased::LaneGeometryDataProxy>>,
+                        adore_if_ros_msg::LaneGeometryArray,
+                        LaneGeometryConverter>(n_,"ENV/lanegeometryarray",100);
+      }
+
       // reads reset signal for lane matching
 			adore::env::AFactory::TResetLaneMatchingReader* getResetLaneMatchingReader() override
       {

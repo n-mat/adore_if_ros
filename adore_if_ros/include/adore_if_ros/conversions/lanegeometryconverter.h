@@ -20,6 +20,7 @@
 #include <adore_if_ros/ros_com_patterns.h>
 #include <adore_if_ros_msg/LinearPiecewiseFunction3d.h>
 #include <adore_if_ros_msg/LaneGeometry.h>
+#include <adore_if_ros_msg/LaneGeometryArray.h>
 #include <adore_if_ros_msg/LaneFollowingGeometry.h>
 #include <adore_if_ros_msg/LaneChangeGeometry.h>
 #include <std_msgs/Float64.h>
@@ -50,6 +51,17 @@ namespace adore
                 {
                     copyLanefromMsg(combined.right, msg->righttargetlane);
                     copyLaneChangefromMsg(combined.rightChange, msg->rightlane);
+                }
+            }
+
+            void operator()(adore_if_ros_msg::LaneGeometryArrayConstPtr msg,
+                            std::vector<std::shared_ptr<adore::env::BorderBased::LaneGeometryDataProxy>>& result)
+            {
+                for (auto it = msg->lanes.begin(); it != msg->lanes.end(); ++it)
+                {
+                    auto new_lane = std::make_shared<adore::env::BorderBased::LaneGeometryDataProxy>();
+                    copyLanefromMsg(new_lane,*it);
+                    result.push_back(new_lane);
                 }
             }
 
@@ -113,6 +125,17 @@ namespace adore
                     copyMsgfromLane(msg.righttargetlane, combined.right);
                 }
                 return msg;
+            }
+            adore_if_ros_msg::LaneGeometryArray operator()(const std::vector<std::shared_ptr<adore::env::BorderBased::LaneGeometryDataProxy>>& input)
+            {
+                adore_if_ros_msg::LaneGeometryArray result;
+                for (auto it = input.begin(); it!= input.end(); ++it)
+                {
+                    adore_if_ros_msg::LaneFollowingGeometry msg;
+                    copyMsgfromLane(msg,*it);
+                    result.lanes.push_back(msg);
+                }
+                return result;
             }
 
             void copyMsgfromLane(adore_if_ros_msg::LaneFollowingGeometry& msg,
