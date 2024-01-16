@@ -64,6 +64,12 @@ namespace adore
                                       adore_if_ros_msg::NavigationGoalConstPtr,
                                       NavigationGoalConverter>(n_, "ENV/NavigationGoal", 1);
                 }
+                virtual adore::mad::AWriter<adore::fun::NavigationGoal>* getNavigationGoalWriter() override
+                {
+                    return new Writer<adore::fun::NavigationGoal,
+                                      adore_if_ros_msg::NavigationGoal,
+                                      NavigationGoalConverter>(n_, "ENV/NavigationGoal", 1);
+                }
                 //get updates on the setpoint request
                 virtual adore::mad::AReader<adore::fun::SetPointRequest>* getSetPointRequestReader() override
                 {

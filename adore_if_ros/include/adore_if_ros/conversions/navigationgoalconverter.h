@@ -44,6 +44,14 @@ namespace adore
                 goal->target_.y_ = msg.get()->target.y;
                 goal->target_.z_ = msg.get()->target.z;
             }
+            adore_if_ros_msg::NavigationGoal operator()(const adore::fun::NavigationGoal& goal)
+            {
+                adore_if_ros_msg::NavigationGoal msg;
+                msg.target.x = goal.target_.x_;
+                msg.target.y = goal.target_.y_;
+                msg.target.z = goal.target_.z_;
+                return msg;
+            }
         };
     }
 }
